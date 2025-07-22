@@ -103,9 +103,35 @@ public class Schedulars {
 				.map(notification -> notification.getFcmToken()).collect(Collectors.toList());
 		System.out.println(fcmTokens);
 		fcmTokens.stream().forEach(token -> {
-			System.out.println(token) ;
+
 			firebaseService.sendNotification(accessToken, token, "Tiger", morningText);
-			System.out.println("Okay");
+
+		});
+
+	}
+
+	public void sendNotificationsAtEventing() {
+		
+		String accessToken = firebaseService.refreshAccessToken();
+
+		List<User> users = (List<User>) userRepo.findAll();
+		List<String> fcmTokens = users.stream()
+				.flatMap(user -> notificationRepo.findByUserGmail(user.getGmail()).stream())
+				.map(notification -> notification.getFcmToken()).collect(Collectors.toList());
+
+		fcmTokens.stream().forEach(token -> {
+			String motivation = "Good Evening, Grab your laptop and learn new!!";
+			String temp = null;
+			try {
+				temp = groq.workUpdateNotification(notificationRepo.findByFcmToken(token).get().getUser().getGmail());
+			} catch (GroqException e) {
+
+				e.printStackTrace();
+			}
+			if (temp != null)
+				motivation = temp;
+			firebaseService.sendNotification(accessToken, token, "Tiger-your soulmate", motivation);
+
 		});
 
 	}
