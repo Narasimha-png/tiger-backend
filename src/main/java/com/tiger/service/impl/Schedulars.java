@@ -34,7 +34,7 @@ public class Schedulars {
 		this.notificationRepo = notificationRepo;
 	}
 
-//	@Scheduled(cron = "*/3 * * * * *") 
+	@Scheduled(cron = "0 30 23 * * *") 
 	public void updateLeetcodeDaily() {
 		List<User> users = (List<User>) userRepo.findAll();
 		users.stream().forEach((user) -> {
@@ -48,7 +48,7 @@ public class Schedulars {
 		});
 	}
 
-//	@Scheduled(cron = "*/3 * * * * *") 
+	@Scheduled(cron = "0 30 23 * * *") 
 	public void updateDailyRoasts() {
 		List<User> users = (List<User>) userRepo.findAll();
 		users.stream().forEach(user -> {
@@ -65,7 +65,7 @@ public class Schedulars {
 
 	}
 
-//	@Scheduled(cron = "*/3 * * * * *") 
+	@Scheduled(cron = "0 0 21 * * *") 
 	public void postInLinkedIn() {
 		List<User> users = (List<User>) userRepo.findAll();
 		users.stream().forEach(user -> {
@@ -82,7 +82,7 @@ public class Schedulars {
 		});
 
 	}
-
+	@Scheduled(cron = "0 0 6 * * *")
 	public void sendNotifications() {
 		String tempText = "Good Morning, Grab your laptop and learn new!!";
 		try {
@@ -109,7 +109,7 @@ public class Schedulars {
 		});
 
 	}
-
+	@Scheduled(cron = "0 30 18 * * *")
 	public void sendNotificationsAtEventing() {
 		
 		String accessToken = firebaseService.refreshAccessToken();
