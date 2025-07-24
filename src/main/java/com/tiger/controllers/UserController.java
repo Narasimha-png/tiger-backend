@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -104,16 +105,13 @@ public class UserController {
 	public ResponseEntity<MessageResponse> updateLeetCodeProfile(@RequestBody UserDTO user) throws UserException{
 		String email = auth.getEmail() ;
 		userService.updateLeetCodeProfile(auth.getEmail(), user.getLeetcodeProfile(), user.getTargetSubmissions());
-
-		Thread updateRoasts = new Thread(()-> {
+		
 			try {
 				groqService.getProfileRoastings(user.getLeetcodeProfile(),email, 0 ) ;
 			} catch (GroqException e) {
 				
 				e.printStackTrace();
 			}
-		}) ;
-		updateRoasts.start();
 		return new ResponseEntity<MessageResponse>(new MessageResponse("Updated LeetCode Profile" , HttpStatus.OK.value()),HttpStatus.OK) ;
 	}
 	@PatchMapping("github")

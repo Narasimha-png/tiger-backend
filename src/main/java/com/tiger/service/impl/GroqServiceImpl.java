@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,6 +79,7 @@ public class GroqServiceImpl implements GroqService {
 
 	@Override
 	@Transactional
+	
 	public void getProfileRoastings(String userName, String gmail, int attempts) throws GroqException {
 		if (attempts > urlConfig.getGroqRetryCount())
 			throw new GroqException("Profile parsing failed max limit reached",
@@ -113,6 +115,7 @@ public class GroqServiceImpl implements GroqService {
 		GroqResponse response = groq.post().uri("/openai/v1/chat/completions").bodyValue(request).retrieve()
 				.bodyToMono(GroqResponse.class).block();
 
+		System.out.println(response) ;
 		String rawContent = response.getChoices().get(0).getMessage().getContent();
 
 		List<RoastResponse> roastList = new ArrayList<>();
@@ -136,6 +139,9 @@ public class GroqServiceImpl implements GroqService {
 
 			}
 		}
+		
+		if(roastList.size() == 0 )
+			getProfileRoastings(userName, gmail, attempts + 1);
 
 		Roasts roast = new Roasts();
 		roast.setUser(userRepo.findByGmail(gmail).orElseThrow(
