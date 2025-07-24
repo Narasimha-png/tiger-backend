@@ -95,7 +95,7 @@ public class UserController {
 
 	@GetMapping("/linkedin/callback")
 	public RedirectView handleCallback(@RequestParam("code") String code) throws Exception {
-		userService.storeAcessKey(code) ;
+		code = userService.storeAcessKey(code) ;
 		String redirectUrl = urlConfig.getRedirectUrl() + code;
 		return new RedirectView(redirectUrl);
 	}
