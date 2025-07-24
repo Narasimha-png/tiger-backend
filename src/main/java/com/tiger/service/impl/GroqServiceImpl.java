@@ -124,6 +124,7 @@ public class GroqServiceImpl implements GroqService {
 				String json = matcher.group(1);
 				RoastResponse roast = mapper.readValue(json, RoastResponse.class);
 				roastList.add(roast);
+				
 			} catch (Exception e) {
 				try {
 					Thread.sleep(groqConfig.getRetryLatency());
@@ -136,6 +137,8 @@ public class GroqServiceImpl implements GroqService {
 
 			}
 		}
+		if(roastList.size() == 0 )
+			getProfileRoastings(userName, gmail, attempts + 1);
 
 		Roasts roast = new Roasts();
 		roast.setUser(userRepo.findByGmail(gmail).orElseThrow(
