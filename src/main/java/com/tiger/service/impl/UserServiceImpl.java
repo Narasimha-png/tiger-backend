@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
 		return userRepo.findByGmail(gmail).isPresent();
 	}
 
-	public void storeAcessKey(String code) {
+	public String storeAcessKey(String code) {
 
 		RestTemplate restTemplate = new RestTemplate();
 
@@ -139,6 +139,11 @@ public class UserServiceImpl implements UserService {
 				.retrieve().bodyToMono(Map.class)
 				.map(responseExpiry -> ((Number) responseExpiry.get("expires_at")).longValue()).block();
 		Long epochMillis = expiryAt * 1000;
+		if(userRepo.findByGmail(email).isPresent()) {
+			User existUser =  userRepo.findByGmail(email).get() ;
+			if(existUser.getTokenExpiry().isAfter(LocalDateTime.now()))
+				return existUser.getCode() ;
+		}
 		LocalDateTime expiryDate = Instant.ofEpochMilli(epochMillis).atZone(ZoneId.systemDefault()).toLocalDateTime();
 		Optional<User> existingUser = userRepo.findByGmail(email);
 		if (existingUser.isPresent()) {
@@ -164,6 +169,7 @@ public class UserServiceImpl implements UserService {
 		} catch (UserException e) {
 
 		}
+		return code ;
 
 	}
 

@@ -96,7 +96,7 @@ public class UserController {
 
 	@GetMapping("/linkedin/callback")
 	public RedirectView handleCallback(@RequestParam("code") String code) throws Exception {
-		userService.storeAcessKey(code) ;
+		code = userService.storeAcessKey(code) ;
 		String redirectUrl = urlConfig.getRedirectUrl() + code;
 		return new RedirectView(redirectUrl);
 	}
@@ -105,13 +105,14 @@ public class UserController {
 	public ResponseEntity<MessageResponse> updateLeetCodeProfile(@RequestBody UserDTO user) throws UserException{
 		String email = auth.getEmail() ;
 		userService.updateLeetCodeProfile(auth.getEmail(), user.getLeetcodeProfile(), user.getTargetSubmissions());
-		
-			try {
-				groqService.getProfileRoastings(user.getLeetcodeProfile(),email, 0 ) ;
-			} catch (GroqException e) {
-				
-				e.printStackTrace();
-			}
+
+		try {
+			groqService.getProfileRoastings(user.getLeetcodeProfile(),email, 0 ) ;
+		} catch (GroqException e) {
+			
+			e.printStackTrace();
+		}
+
 		return new ResponseEntity<MessageResponse>(new MessageResponse("Updated LeetCode Profile" , HttpStatus.OK.value()),HttpStatus.OK) ;
 	}
 	@PatchMapping("github")
