@@ -102,16 +102,17 @@ public class UserController {
 	}
 
 	@PatchMapping("leetcode")
-	@Async
 	public ResponseEntity<MessageResponse> updateLeetCodeProfile(@RequestBody UserDTO user) throws UserException{
 		String email = auth.getEmail() ;
 		userService.updateLeetCodeProfile(auth.getEmail(), user.getLeetcodeProfile(), user.getTargetSubmissions());
+
 		try {
 			groqService.getProfileRoastings(user.getLeetcodeProfile(),email, 0 ) ;
 		} catch (GroqException e) {
 			
 			e.printStackTrace();
 		}
+
 		return new ResponseEntity<MessageResponse>(new MessageResponse("Updated LeetCode Profile" , HttpStatus.OK.value()),HttpStatus.OK) ;
 	}
 	@PatchMapping("github")

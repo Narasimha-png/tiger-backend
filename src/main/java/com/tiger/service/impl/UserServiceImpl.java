@@ -96,6 +96,7 @@ public class UserServiceImpl implements UserService {
 
 		RestTemplate restTemplate = new RestTemplate();
 
+		System.out.println(urlConfig.getLinkedinCallback()) ;
 		MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
 		form.add("grant_type", "authorization_code");
 		form.add("code", code);
@@ -103,6 +104,7 @@ public class UserServiceImpl implements UserService {
 		form.add("client_id", urlConfig.getLinkedinClientId());
 		form.add("client_secret", urlConfig.getLinkedinClientSecret());
 
+		System.out.println("first stemp okay") ;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED);
 
@@ -110,7 +112,7 @@ public class UserServiceImpl implements UserService {
 
 		ResponseEntity<String> response = restTemplate.postForEntity("https://www.linkedin.com/oauth/v2/accessToken",
 				request, String.class);
-
+		System.out.println("second stemp okay") ;
 		String accessToken = null;
 		Pattern pattern = Pattern.compile("\"access_token\"\\s*:\\s*\"([^\"]+)\"");
 		Matcher matcher = pattern.matcher(response.getBody());
@@ -120,6 +122,8 @@ public class UserServiceImpl implements UserService {
 		} else {
 			System.out.println("Access token not found");
 		}
+		
+		System.out.println("third stemp okay") ;
 
 		WebClient webClient = WebClient.builder().baseUrl("https://api.linkedin.com")
 				.defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken).build();

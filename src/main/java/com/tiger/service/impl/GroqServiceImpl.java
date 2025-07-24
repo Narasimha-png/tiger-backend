@@ -79,7 +79,7 @@ public class GroqServiceImpl implements GroqService {
 
 	@Override
 	@Transactional
-	@Async
+
 	public void getProfileRoastings(String userName, String gmail, int attempts) throws GroqException {
 		if (attempts > urlConfig.getGroqRetryCount())
 			throw new GroqException("Profile parsing failed max limit reached",
@@ -115,6 +115,7 @@ public class GroqServiceImpl implements GroqService {
 		GroqResponse response = groq.post().uri("/openai/v1/chat/completions").bodyValue(request).retrieve()
 				.bodyToMono(GroqResponse.class).block();
 
+		System.out.println(response) ;
 		String rawContent = response.getChoices().get(0).getMessage().getContent();
 
 		List<RoastResponse> roastList = new ArrayList<>();
@@ -139,6 +140,7 @@ public class GroqServiceImpl implements GroqService {
 
 			}
 		}
+
 		if(roastList.size() == 0 )
 			getProfileRoastings(userName, gmail, attempts + 1);
 
