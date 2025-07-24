@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,6 +79,7 @@ public class GroqServiceImpl implements GroqService {
 
 	@Override
 	@Transactional
+	@Async
 	public void getProfileRoastings(String userName, String gmail, int attempts) throws GroqException {
 		if (attempts > urlConfig.getGroqRetryCount())
 			throw new GroqException("Profile parsing failed max limit reached",
