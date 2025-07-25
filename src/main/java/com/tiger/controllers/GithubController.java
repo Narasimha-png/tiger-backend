@@ -23,7 +23,6 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("api/tiger/github")
-@CrossOrigin(origins = "*")
 public class GithubController {
 	private GithubServiceImpl githubService ;
 	private AuthService auth ;
