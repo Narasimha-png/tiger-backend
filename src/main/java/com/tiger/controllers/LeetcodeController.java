@@ -25,7 +25,6 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("api/tiger/leetcode")
-@CrossOrigin(origins = "*")
 public class LeetcodeController {
 	private LeetcodeServiceImpl leetcode ;
 	private AuthService auth ;

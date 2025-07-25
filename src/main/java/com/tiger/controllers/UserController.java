@@ -36,7 +36,6 @@ import jakarta.persistence.PostRemove;
 
 @RestController
 @RequestMapping("api/tiger/user")
-@CrossOrigin(origins = "*")
 public class UserController {
 	private UserServiceImpl userService;
 	private AuthService auth;
