@@ -113,7 +113,9 @@ public class Schedulars {
 		});
 
 	}
-	@Scheduled(cron = "0 30 18 * * *")
+
+	@Scheduled(cron = "0 0 18 * * *")
+
 	public void sendNotificationsAtEventing() {
 		
 		String accessToken = firebaseService.refreshAccessToken();
