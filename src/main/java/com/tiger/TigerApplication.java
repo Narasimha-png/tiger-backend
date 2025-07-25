@@ -14,6 +14,7 @@ import org.springframework.boot.SpringApplication;
 @EnableScheduling
 public class TigerApplication {
 	public static void main(String[] args) {
+		
 		/*
 		 * Dotenv dotenv = Dotenv.load();
 		 * 

@@ -25,6 +25,6 @@ public class UrlConfig {
 	private String firebaseProjectid ;
 	private String googleClientid ;
 	private String googleClientSecret ;
-
+	private String myUrl ;
 	
 }

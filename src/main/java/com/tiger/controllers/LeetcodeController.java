@@ -57,4 +57,5 @@ public class LeetcodeController {
 		return new ResponseEntity<String>(groq.workUpdateNotification(auth.getEmail()), HttpStatus.OK) ;
 	}
 	
+	
 }

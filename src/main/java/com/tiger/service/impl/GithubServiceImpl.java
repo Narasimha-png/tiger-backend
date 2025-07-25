@@ -78,7 +78,7 @@ public class GithubServiceImpl implements GithubService {
 				.orElseThrow(() -> new UserException("User not found", HttpStatus.NOT_FOUND.value()));
 
 		Set<String> repos = getTotalRepositories(user.getGithubProfile());
-		System.out.println(repos);	return Flux.fromIterable(repos)
+			return Flux.fromIterable(repos)
 				.flatMap(fullName -> github.get()
 						.uri(uriBuilder -> uriBuilder.path("/repos/{owner}/{repo}/commits")
 								.build(fullName.split("/")[0], fullName.split("/")[1]))

@@ -35,8 +35,6 @@ public class LinkedInTokenValidationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
-
-        System.out.println("Filter triggered for URI: " + request.getRequestURI());
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -89,6 +87,8 @@ public class LinkedInTokenValidationFilter extends OncePerRequestFilter {
         
         return path.equals("/api/tiger/user/linkedin/login") ||
                path.equals("/api/tiger/user/linkedin/callback")||
-               path.startsWith("/api/tiger/leetcode/profile/");
+               path.startsWith("/api/tiger/leetcode/profile/")||
+               path.equals("/api/tiger/github/testexp") ||
+               path.equals("/ping");
     }
 }

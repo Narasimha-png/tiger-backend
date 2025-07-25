@@ -1,11 +1,13 @@
 package com.tiger.service.impl;
 
+import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import com.tiger.config.UrlConfig;
 import com.tiger.entity.User;
 import com.tiger.exception.GroqException;
 import com.tiger.exception.UserException;
@@ -21,10 +23,11 @@ public class Schedulars {
 	private GithubServiceImpl github;
 	private FirebaseNotificationService firebaseService;
 	private NotificationRepository notificationRepo;
+	private UrlConfig urlConfig ;
 
 	public Schedulars(LeetcodeServiceImpl leetcode, GroqServiceImpl groq, LinkedinPostServiceImpl linkedIn,
 			UserRepository userRepo, GithubServiceImpl github, FirebaseNotificationService firebaseService,
-			NotificationRepository notificationRepo) {
+			NotificationRepository notificationRepo, UrlConfig urlConfig ) {
 		this.leetcode = leetcode;
 		this.groq = groq;
 		this.linkedIn = linkedIn;
@@ -32,6 +35,7 @@ public class Schedulars {
 		this.github = github;
 		this.firebaseService = firebaseService;
 		this.notificationRepo = notificationRepo;
+		this.urlConfig = urlConfig ;
 	}
 
 	@Scheduled(cron = "0 30 23 * * *") 
@@ -101,7 +105,7 @@ public class Schedulars {
 		List<String> fcmTokens = users.stream()
 				.flatMap(user -> notificationRepo.findByUserGmail(user.getGmail()).stream())
 				.map(notification -> notification.getFcmToken()).collect(Collectors.toList());
-		System.out.println(fcmTokens);
+		
 		fcmTokens.stream().forEach(token -> {
 
 			firebaseService.sendNotification(accessToken, token, "Tiger", morningText);
@@ -109,7 +113,9 @@ public class Schedulars {
 		});
 
 	}
+
 	@Scheduled(cron = "0 0 18 * * *")
+
 	public void sendNotificationsAtEventing() {
 		
 		String accessToken = firebaseService.refreshAccessToken();
@@ -135,5 +141,16 @@ public class Schedulars {
 		});
 
 	}
+	@Scheduled(fixedRate = 300000) 
+    public void pingSelf() {
+        try {
+            new URL( urlConfig.getMyUrl()+ "/ping")
+                .openConnection()
+                .getInputStream()
+                .close();
+        } catch (Exception e) {
+            System.err.println("Ping failed: " + e.getMessage());
+        }
+    }
 
 }

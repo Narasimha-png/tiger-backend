@@ -115,7 +115,6 @@ public class GroqServiceImpl implements GroqService {
 		GroqResponse response = groq.post().uri("/openai/v1/chat/completions").bodyValue(request).retrieve()
 				.bodyToMono(GroqResponse.class).block();
 
-		System.out.println(response) ;
 		String rawContent = response.getChoices().get(0).getMessage().getContent();
 
 		List<RoastResponse> roastList = new ArrayList<>();
@@ -290,7 +289,7 @@ public class GroqServiceImpl implements GroqService {
 
 	@Override
 	public String morningNotification() throws GroqException {
-		System.out.println(groqConfig.getNotifyMorning()) ;
+	
 	    Message message = new Message("user", groqConfig.getNotifyMorning());
 
 	    GroqRequest request = new GroqRequest();

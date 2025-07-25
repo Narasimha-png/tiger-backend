@@ -13,6 +13,8 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpEntity;
@@ -69,6 +71,8 @@ public class UserServiceImpl implements UserService {
 	private PostsRespository postings;
 	private NotificationRepository  notificationRepo ;
 	
+	private static final Logger LOGGER = LogManager.getLogger(UserServiceImpl.class) ;
+	
 	public UserServiceImpl(UserRepository user, ModelMapper mapper, GroqServiceImpl groq, ObjectMapper objectMapper,
 			RoastsRepository roastsRepo, UrlConfig urlConfig, UserActivityRepository userActivityRepo,
 			@Qualifier("linkedin") WebClient linkedinClient, LeetcodeServiceImpl leetcodeService,
@@ -96,7 +100,6 @@ public class UserServiceImpl implements UserService {
 
 		RestTemplate restTemplate = new RestTemplate();
 
-		System.out.println(urlConfig.getLinkedinCallback()) ;
 		MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
 		form.add("grant_type", "authorization_code");
 		form.add("code", code);
@@ -104,7 +107,6 @@ public class UserServiceImpl implements UserService {
 		form.add("client_id", urlConfig.getLinkedinClientId());
 		form.add("client_secret", urlConfig.getLinkedinClientSecret());
 
-		System.out.println("first stemp okay") ;
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED);
 
@@ -112,7 +114,7 @@ public class UserServiceImpl implements UserService {
 
 		ResponseEntity<String> response = restTemplate.postForEntity("https://www.linkedin.com/oauth/v2/accessToken",
 				request, String.class);
-		System.out.println("second stemp okay") ;
+
 		String accessToken = null;
 		Pattern pattern = Pattern.compile("\"access_token\"\\s*:\\s*\"([^\"]+)\"");
 		Matcher matcher = pattern.matcher(response.getBody());
@@ -120,10 +122,10 @@ public class UserServiceImpl implements UserService {
 		if (matcher.find()) {
 			accessToken = matcher.group(1);
 		} else {
-			System.out.println("Access token not found");
+			LOGGER.error("Unable to find access token") ;
 		}
 		
-		System.out.println("third stemp okay") ;
+	
 
 		WebClient webClient = WebClient.builder().baseUrl("https://api.linkedin.com")
 				.defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken).build();
