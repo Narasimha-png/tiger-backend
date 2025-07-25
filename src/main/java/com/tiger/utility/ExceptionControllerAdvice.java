@@ -3,6 +3,8 @@ package com.tiger.utility;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,6 +13,7 @@ import org.springframework.web.client.HttpClientErrorException;
 
 @RestControllerAdvice
 public class ExceptionControllerAdvice {
+	
 	@ExceptionHandler({NoSuchElementException.class})
 	public ResponseEntity<ErrorInfo> sqlError(NoSuchElementException ex){
 		return new ResponseEntity<ErrorInfo>(new ErrorInfo(ex.toString() , HttpStatus.UNAUTHORIZED.value(), LocalDateTime.now()), HttpStatus.UNAUTHORIZED ) ;

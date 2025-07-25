@@ -3,6 +3,8 @@ package com.tiger.service.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -24,7 +26,8 @@ public class FirebaseNotificationService {
 	private WebClient firebaseClient ;
 	private String accessToken ;
 	private final WebClient webClient = WebClient.create("https://oauth2.googleapis.com");
-
+	private static final Logger LOGGER = LogManager.getLogger(FirebaseNotificationService.class) ;
+	
 	public FirebaseNotificationService(@Qualifier("firebase") WebClient firebaseClient, UrlConfig urlConfig) {
 		this.firebaseClient = firebaseClient ;
 		this.urlConfig = urlConfig ;
@@ -52,7 +55,7 @@ public class FirebaseNotificationService {
 	        return result != null ? (String) result.get("access_token") : null;
 
 	    } catch (Exception e) {
-	        System.out.println("Error refreshing token: " + e.getMessage());
+	        LOGGER.error("Error refreshing token " , e );
 	        return null;
 	    }
 	}
@@ -82,8 +85,7 @@ public class FirebaseNotificationService {
 	                .bodyValue(message)
 	                .retrieve()
 	                .bodyToMono(String.class)
-	                .doOnNext(response -> System.out.println("Notification sent successfully: " + response))
-	                .doOnError(error -> System.err.println("Error sending notification: " + error.getMessage()))
+	                .doOnError(error -> LOGGER.error("Error sending notification: " + error.getMessage()))
 	                .block();
 	        }catch(Exception e) {}
 	    }

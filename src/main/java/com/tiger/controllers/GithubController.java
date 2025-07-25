@@ -41,4 +41,9 @@ public class GithubController {
 		githubService.updateTodaysCommits(auth.getEmail());
 		return new ResponseEntity<List<GitStreakDTO>>(githubService.getTodayCommits(auth.getEmail()), HttpStatus.OK) ;
 	}
+	@GetMapping("testexp")
+	public ResponseEntity<List<GitStreakDTO>> testException() throws UserException{
+		throw new UserException("Error user", HttpStatus.ALREADY_REPORTED.value()) ;
+		
+	}
 }
