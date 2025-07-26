@@ -77,6 +77,9 @@ public class GithubServiceImpl implements GithubService {
 		User user = userRepo.findByGmail(gmail)
 				.orElseThrow(() -> new UserException("User not found", HttpStatus.NOT_FOUND.value()));
 
+		if(user.getGithubProfile() == null || user.getGithubProfile().length() == 0 ) {
+			return List.of(new GitStreakDTO()) ;
+		}
 		Set<String> repos = getTotalRepositories(user.getGithubProfile());
 			return Flux.fromIterable(repos)
 				.flatMap(fullName -> github.get()
