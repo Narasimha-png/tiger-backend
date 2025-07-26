@@ -84,7 +84,10 @@ public class LinkedInTokenValidationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getRequestURI();
-        
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            return true;
+        }
+
         return path.equals("/api/tiger/user/linkedin/login") ||
                path.equals("/api/tiger/user/linkedin/callback")||
                path.startsWith("/api/tiger/leetcode/profile/")||
