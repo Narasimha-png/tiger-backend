@@ -276,11 +276,7 @@ public class UserServiceImpl implements UserService {
 	public void logout(String email) throws UserException {
 		if (!isUserExists(email))
 			throw new UserException("User not found.", HttpStatus.NOT_FOUND.value());
-		User user = userRepo.findByGmail(email).get();
-		user.setAccessToken(null);
-		user.setCode(null);
-		user.setTokenExpiry(null);
-		userRepo.save(user);
+		
 		try {
 			this.addUserActivity(ActivityStatus.LOGOUT, email);
 		} catch (UserException e) {
