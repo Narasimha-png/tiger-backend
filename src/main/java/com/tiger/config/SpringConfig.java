@@ -66,7 +66,7 @@ public class SpringConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // apply to all routes
                         .allowedOrigins("https://tiger-pro.vercel.app")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE","PATCH", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
             }
