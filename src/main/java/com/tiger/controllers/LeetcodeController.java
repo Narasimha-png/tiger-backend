@@ -18,8 +18,8 @@ import com.tiger.exception.GroqException;
 import com.tiger.exception.LeetcodeException;
 import com.tiger.exception.UserException;
 import com.tiger.service.AuthService;
-import com.tiger.service.impl.GroqServiceImpl;
-import com.tiger.service.impl.LeetcodeServiceImpl;
+import com.tiger.service.implementation.GroqServiceImpl;
+import com.tiger.service.implementation.LeetcodeServiceImpl;
 
 import reactor.core.publisher.Mono;
 

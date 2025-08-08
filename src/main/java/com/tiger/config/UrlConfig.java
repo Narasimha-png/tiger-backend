@@ -26,5 +26,5 @@ public class UrlConfig {
 	private String googleClientid ;
 	private String googleClientSecret ;
 	private String myUrl ;
-	
+	private String myDomain ;
 }

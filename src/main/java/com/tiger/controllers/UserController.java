@@ -26,10 +26,10 @@ import com.tiger.dto.UserDTO;
 import com.tiger.exception.GroqException;
 import com.tiger.exception.UserException;
 import com.tiger.service.AuthService;
-import com.tiger.service.impl.GroqServiceImpl;
-import com.tiger.service.impl.LinkedinPostServiceImpl;
-import com.tiger.service.impl.Schedulars;
-import com.tiger.service.impl.UserServiceImpl;
+import com.tiger.service.implementation.GroqServiceImpl;
+import com.tiger.service.implementation.LinkedinPostServiceImpl;
+import com.tiger.service.implementation.Schedulars;
+import com.tiger.service.implementation.UserServiceImpl;
 
 import jakarta.persistence.PostRemove;
 
@@ -86,7 +86,7 @@ public class UserController {
 		String authUrl = UriComponentsBuilder.newInstance().scheme("https").host("www.linkedin.com")
 				.path("/oauth/v2/authorization").queryParam("response_type", "code")
 				.queryParam("client_id", urlConfig.getLinkedinClientId())
-				.queryParam("redirect_uri", urlConfig.getLinkedinCallback())
+				.queryParam("redirect_uri", urlConfig.getMyUrl() +  urlConfig.getLinkedinCallback())
 				.queryParam("scope", "openid profile email w_member_social").queryParam("state", "random_state_123")
 				.toUriString();
 

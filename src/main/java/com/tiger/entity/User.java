@@ -39,6 +39,7 @@ public class User {
 	private LocalDateTime joinedAt ;
 	private Boolean linkedinPostService ;
 	private String linkedinUserId ;
+	private boolean subscription ;
 	@PrePersist
 	public void getJoinedAtTime() {
 		this.joinedAt = LocalDateTime.now() ;

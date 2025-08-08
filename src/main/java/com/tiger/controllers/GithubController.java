@@ -17,7 +17,7 @@ import com.tiger.dto.UserDTO;
 import com.tiger.exception.GithubException;
 import com.tiger.exception.UserException;
 import com.tiger.service.AuthService;
-import com.tiger.service.impl.GithubServiceImpl;
+import com.tiger.service.implementation.GithubServiceImpl;
 
 import reactor.core.publisher.Mono;
 
