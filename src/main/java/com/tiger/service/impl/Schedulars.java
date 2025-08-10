@@ -1,4 +1,4 @@
-package com.tiger.service.impl;
+package com.tiger.service.implementation;
 
 import java.net.URL;
 import java.util.List;
@@ -69,7 +69,7 @@ public class Schedulars {
 
 	}
 
-	@Scheduled(cron = "0 0 21 * * *") 
+	@Scheduled(cron = "0 32 13 * * *") 
 	public void postInLinkedIn() {
 		List<User> users = (List<User>) userRepo.findAll();
 		users.stream().forEach(user -> {
@@ -113,9 +113,7 @@ public class Schedulars {
 		});
 
 	}
-
-	@Scheduled(cron = "0 0 18 * * *")
-
+	@Scheduled(cron = "0 30 18 * * *")
 	public void sendNotificationsAtEventing() {
 		
 		String accessToken = firebaseService.refreshAccessToken();
@@ -141,16 +139,4 @@ public class Schedulars {
 		});
 
 	}
-	@Scheduled(fixedRate = 300000) 
-    public void pingSelf() {
-        try {
-            new URL( urlConfig.getMyUrl()+ "/ping")
-                .openConnection()
-                .getInputStream()
-                .close();
-        } catch (Exception e) {
-            System.err.println("Ping failed: " + e.getMessage());
-        }
-    }
-
 }
