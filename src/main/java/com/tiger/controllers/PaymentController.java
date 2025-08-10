@@ -30,6 +30,7 @@ public class PaymentController {
 	public PaymentController(PaymentServiceImpl paymentService, AuthService authService, UrlConfig urlConfig) {
 		this.authService = authService ;
 		this.paymentService = paymentService ;
+		this.urlConfig = urlConfig ;
 	}
 	@GetMapping("checkout")
 	public ResponseEntity<Map<String, String>> checkOutPage() throws Exception {
