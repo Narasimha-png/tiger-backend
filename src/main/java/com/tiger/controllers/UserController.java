@@ -86,7 +86,7 @@ public class UserController {
 		String authUrl = UriComponentsBuilder.newInstance().scheme("https").host("www.linkedin.com")
 				.path("/oauth/v2/authorization").queryParam("response_type", "code")
 				.queryParam("client_id", urlConfig.getLinkedinClientId())
-				.queryParam("redirect_uri", urlConfig.getMyUrl() +  urlConfig.getLinkedinCallback())
+				.queryParam("redirect_uri", urlConfig.getLinkedinCallback())
 				.queryParam("scope", "openid profile email w_member_social").queryParam("state", "random_state_123")
 				.toUriString();
 
